@@ -11,16 +11,14 @@ package cb.Week1.Day3;
  */
 class Author
 {
-    private String name,email;
-    private char gender;
+    private final String name;
+    private String email;
+    private final char gender;
     Author(String name,String email,char gender)
     {
         this.name=name;
         this.email=email;
         this.gender=gender;
-    }
-    Author()
-    {
     }
     String getName()
     {
@@ -52,19 +50,14 @@ class Book
     Book(String name,Author[] authors,double price,int qtyInStock)
     {
         this.name=name;
-        authors=new Author[authors.length];
-        for(int temp=0;temp<authors.length;temp++)
-            this.authors[temp]=authors[temp]; 
+        this.authors=new Author[authors.length];
+        this.authors=authors;
         this.price=price;
         this.qtyInStock=qtyInStock;
     }
     Book(String name,Author author,double price,int qtyInStock)
     {
-        this.name=name;
-        authors=new Author[1];
-        this.authors[0]=author;
-        this.price=price;
-        this.qtyInStock=qtyInStock;
+        this(name,new Author[]{author},price,qtyInStock);//calling constructor from another constructor
     }
     String getname()
     {
