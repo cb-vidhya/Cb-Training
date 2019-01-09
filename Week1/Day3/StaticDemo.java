@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 class Student
 {
-    static int studentId;
-    static String studentName;
-    static char gender;
-    static Subject subjects=new Subject();
+    private int studentId;
+    private String studentName;
+    private char gender;
+    public Subject subjects=new Subject();
     void setStudentId(int studentId)
     {
         this.studentId=studentId;
@@ -44,12 +44,12 @@ class Student
 }
 class Subject
 {
-    String subject1;
-    float marks1;
-    String subject2;
-    float marks2;
-    String subject3;
-    float marks3;
+    private String subject1;
+    private float marks1;
+    private String subject2;
+    private float marks2;
+    private String subject3;
+    private float marks3;
     void setMarks1(float marks1)
     {
         this.marks1=marks1;
@@ -101,36 +101,47 @@ class Subject
 }
 class ResultGenerator
 {
-    float total,average;
-    void generateResult(Student student)
+    static void generateResult(ArrayList<Student> student)
     {
-        System.out.println("Id: "+student.getStudentId());
-        System.out.println("Name: "+student.getStudentName());
-        total=student.subjects.marks1+student.subjects.marks2+student.subjects.marks3;
-        System.out.println("Total: "+total);
-        average=(float)(total/3.0);
-        System.out.println("Average: "+average);
+        float total;
+        float average;
+        int count=1;
+        for(Student s:student)
+        {
+            System.out.println("Report card for Student "+count++);
+            System.out.println("Id: "+s.getStudentId());
+            System.out.println("Name: "+s.getStudentName());
+            total=s.subjects.getMarks1()+s.subjects.getMarks2()+s.subjects.getMarks3();
+            System.out.println("Total: "+total);
+            average=(float)(total/3.0);
+            System.out.println("Average: "+average); 
+        }
     }
 }
 class StudentDemo
 {
-    static  ArrayList<Student> list=new ArrayList<Student>();
+    static private ArrayList<Student> list=new ArrayList<>();
     void storeStudentData(Student student)
     {
-        System.out.println("Report card is");
-        ResultGenerator result=new ResultGenerator();
-        result.generateResult(student);
+        list.add(student); 
     }
+    void display()
+    {
+        ResultGenerator result=new ResultGenerator();
+        result.generateResult(list);
+        System.out.println("hello"+list.get(0));
+    }
+    
 }
 public class StaticDemo {
     public static void main(String[] args)
     {
         Scanner scan=new Scanner(System.in);
         char choice;
-        StudentDemo demo=new StudentDemo();
-        Student students=new Student();
         do
         {
+            Student students=new Student();
+            StudentDemo demo=new StudentDemo();
             System.out.println("Enter the name of the student");
             String studentName=scan.next();
             students.setStudentName(studentName);
@@ -155,11 +166,12 @@ public class StaticDemo {
             students.subjects.setMarks2(marks2);
             System.out.println("Enter the marks of subject3");
             float marks3=scan.nextFloat();
-            students.subjects.setMarks3(marks3);
+            students.subjects.setMarks3(marks3);System.out.println("called");
             demo.storeStudentData(students);
             System.out.println("Do you want to create more students?(Y/N)");
             choice=scan.next().charAt(0);
             scan.nextLine();  
         }while(choice=='Y');
+        new StudentDemo().display();
     }
 }
